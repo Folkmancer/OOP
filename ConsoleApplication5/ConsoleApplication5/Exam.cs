@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace ConsoleApplication5
+namespace ControlOfEducationalProcess
 {
     class Exam : Trial
     {
-        private byte numberOfAdmitted;
+        private int numberOfAdmitted;
 
         //Конструкторы
 
@@ -21,7 +21,7 @@ namespace ConsoleApplication5
 
         //Свойства
 
-        public byte ValueNumberOfAdmitted
+        public byte NumberOfAdmitted
         {
             get { return numberOfAdmitted; }
             set { numberOfAdmitted = value; }
@@ -29,9 +29,9 @@ namespace ConsoleApplication5
 
         //Методы
 
-        new public string ToString()
+        public override string ToString()
         {
-            return "Экзамен по дисциплине " + ValueNameOfDiscipline + " назначен на " + ValueDate + ". Допущено студентов: " + ValueNumberOfAdmitted  + ". Преподаватель: " + ValueNameOfTeacher;
+            return "Экзамен по дисциплине " + NameOfDiscipline + " назначен на " + Date + ". Допущено студентов: " + NumberOfAdmitted  + ". Преподаватель: " + NameOfTeacher;
         }
     }
 }

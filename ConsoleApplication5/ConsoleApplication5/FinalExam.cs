@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ConsoleApplication5
+namespace ControlOfEducationalProcess
 {
     class FinalExam : Exam
     {
         //Конструкторы
-        //private List<string> = new List<string>;
+        
         public FinalExam() : base()
         {
          
@@ -19,9 +19,9 @@ namespace ConsoleApplication5
 
         //Методы
 
-        new string ToString()
+        public override string ToString()
         {
-            return "Выпускной экзамен по дисциплине " + ValueNameOfDiscipline + " назначен на " + ValueDate + ". Допущено студентов: " + ValueNumberOfAdmitted + ". Преподаватель: " + ValueNameOfTeacher;
+            return "Выпускной экзамен по дисциплине " + NameOfDiscipline + " назначен на " + Date + ". Допущено студентов: " + NumberOfAdmitted + ". Преподаватель: " + NameOfTeacher;
         }
     }
 }

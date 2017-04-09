@@ -1,58 +1,67 @@
 ﻿using System;
 
-namespace ConsoleApplication5
+namespace ControlOfEducationalProcess
 {
     class Test : Trial
     {
-        private byte points;
-        private byte numberOfQuestions;
-        
+        private int points;
+        private readonly int pointsForThree;
+        private readonly int pointsForFour;
+        private readonly int pointsForFive;
+
         //Констуркторы
 
         public Test() : base()
         {
             this.points = 0;
-            this.numberOfQuestions = 0;
+            this.pointsForThree = 15;
+            this.pointsForFour = 25;
+            this.pointsForFive = 30;
         }
 
-        public Test(string newNameOfDiscipline, string newDate, string newNameOfTeacher, byte newPoints, byte newNumberOfQuestions) 
-            : base(newNameOfDiscipline, newDate, newNameOfTeacher)
+        public Test(string NameOfDiscipline, string Date, string NameOfTeacher, int Points, int PointsForThree, int PointsForFour, int PointsForFive) 
+            : base(NameOfDiscipline, Date, NameOfTeacher)
         {
-            this.points = newPoints;
-            this.numberOfQuestions = newNumberOfQuestions;
+            this.points = Points;
+            this.pointsForThree = PointsForThree;
+            this.pointsForFour = PointsForFour;
+            this.pointsForFive = PointsForFive;
         }
 
         //Свойства
 
-        public byte ValuePoints
+        public int Points
         {
             get { return points; }
             set { points = value; }
         }
 
-        public byte ValueNumberOfQuestions
+        public int PointsForThree
         {
-            get { return numberOfQuestions; }
-            set { numberOfQuestions = value; }
+            get { return points; }
+        }
+        public int PointsForFour
+        {
+            get { return points; }
+        }
+        public int PointsForFive
+        {
+            get { return points; }
         }
 
         //Методы
 
-        public int PricePoint()
+        public int GetGrade()
         {
-            try
-            {
-                return points / numberOfQuestions;
-            }
-            catch(DivideByZeroException)
-            {
-                return 0;
-            }
+            if (Points >= PointsForFive) { return 5; }
+            else if (Points < PointsForFive && Points >= PointsForFour  ) { return 4; }
+            else if (Points < PointsForFour && Points >= PointsForThree  ) { return 3; }
+            else { return 2; }
         }
 
         public override string ToString()
         {
-            return "Тестирование по дисциплине " + ValueNameOfDiscipline + " назначено на " + ValueDate + ". Преподаватель: " + ValueNameOfTeacher;
+            return "Тестирование по дисциплине: " + NameOfDiscipline + ". Дата: " + Date + ". Преподаватель: " + NameOfTeacher + ". Оценка: " + GetGrade();
         }
     }
 }

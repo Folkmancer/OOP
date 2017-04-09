@@ -1,6 +1,6 @@
-﻿namespace ConsoleApplication5
+﻿namespace ControlOfEducationalProcess
 {
-    class Trial
+    abstract class Trial
     {
         private string nameOfDiscipline;
         private string date;
@@ -15,28 +15,28 @@
             this.nameOfTeacher = "";
         }
 
-        public Trial(string newNameOfDiscipline, string newDate, string newNameOfTeacher)
+        public Trial(string NameOfDiscipline, string Date, string NameOfTeacher)
         {
-            this.nameOfDiscipline = newNameOfDiscipline;
-            this.date = newDate;
-            this.nameOfTeacher = newNameOfTeacher;
+            this.nameOfDiscipline = NameOfDiscipline;
+            this.date = Date;
+            this.nameOfTeacher = NameOfTeacher;
         }
 
         //Свойства
 
-        public string ValueNameOfDiscipline
+        public string NameOfDiscipline
         {
             get { return nameOfDiscipline; }
             set { nameOfDiscipline = value; }
         }
 
-        public string ValueDate
+        public string Date
         {
             get { return date; }
             set { date = value; }
         }
 
-        public string ValueNameOfTeacher
+        public string NameOfTeacher
         {
             get { return nameOfTeacher; }
             set { nameOfTeacher = value; }
@@ -46,7 +46,7 @@
 
         public override string ToString()
         {
-            return "Испытание по дисциплине " + ValueNameOfDiscipline + " назначено на " + ValueDate + ". Преподаватель: " + ValueNameOfTeacher;
+            return "Испытание по дисциплине " + NameOfDiscipline + " назначено на " + Date + ". Преподаватель: " + NameOfTeacher;
         }
     }     
 }
