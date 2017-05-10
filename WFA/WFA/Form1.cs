@@ -18,13 +18,11 @@ namespace WFA
     {
 
         public List<Exam> Exams { set; get; }
-        public List<Trial> xuy { set; get; }
         
         public Form1()
         {
             InitializeComponent();
             this.Exams = new List<Exam>();
-            xuy = new List<Trial>();
         }
      
 
@@ -180,27 +178,16 @@ namespace WFA
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            /*
+        {  
             XmlSerializer formatter = new XmlSerializer(typeof(List<Exam>));
             using (FileStream fs = new FileStream("Exams.xml", FileMode.OpenOrCreate))
             {
                 formatter.Serialize(fs, Exams);
-            }*/
-            Trial ls = new Exam(1, "1", "1", "1", 1);
-            Trial ls1 = new Test(1, "1", "2", "3", 5, 5, 5, 5);
-            xuy.Add(ls);
-            xuy.Add(ls1);
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-            using (FileStream fs = new FileStream("xuy.xml", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, xuy);
-            }
-            
+            }  
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {/*
+        {
             using (FileStream fs = new FileStream("Exams.xml", FileMode.OpenOrCreate))
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Exam>));
@@ -209,16 +196,6 @@ namespace WFA
                 {
                     this.Exams.Insert(this.Exams.Count, i);
                     ViewCollection();
-                }
-            }*/
-            using (FileStream fs = new FileStream("xuy.xml", FileMode.OpenOrCreate))
-            {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-                List<Trial> newExams = (List<Trial>)formatter.Deserialize(fs);
-                foreach (Trial i in newExams)
-                {
-                    this.xuy.Insert(this.Exams.Count, i);
-                    //ViewCollection();
                 }
             }
         }

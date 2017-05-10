@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
+    [Serializable]
     public class Test : Trial
     {
         private int points;
