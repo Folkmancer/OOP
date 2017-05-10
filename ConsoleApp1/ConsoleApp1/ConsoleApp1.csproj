@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{91D2CD6D-0C9B-40F5-B24D-0D686D5263D8}</ProjectGuid>
+    <ProjectGuid>{1B70A4F4-64F8-4F69-9632-75D77C174AA1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ConsoleApplication5</RootNamespace>
-    <AssemblyName>ConsoleApplication5</AssemblyName>
+    <RootNamespace>ConsoleApp1</RootNamespace>
+    <AssemblyName>ConsoleApp1</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,14 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exam.cs" />
-    <Compile Include="TestException.cs" />
-    <Compile Include="FinalExam.cs" />
-    <Compile Include="IOutputInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="Trial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

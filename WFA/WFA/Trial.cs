@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Xml.Serialization;
 
-namespace ControlOfEducationalProcess
+namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
-    abstract class Trial : IOutputInput, IComparable
+    [Serializable]
+    [XmlInclude(typeof(Exam))]
+    [XmlInclude(typeof(Test))]
+    public abstract class Trial : IOutputInput, IComparable
     {
+        private int id;
         private string nameOfDiscipline;
         private string date;
         private string nameOfTeacher;
@@ -13,19 +18,26 @@ namespace ControlOfEducationalProcess
 
         public Trial()
         {
+            this.id = 0;
             this.nameOfDiscipline = "";
             this.date = "";
             this.nameOfTeacher = "";
         }
 
-        public Trial(string nameOfDiscipline, string date, string nameOfTeacher)
+        public Trial(int id, string nameOfDiscipline, string date, string nameOfTeacher)
         {
+            this.id = id; 
             this.nameOfDiscipline = nameOfDiscipline;
             this.date = date;
             this.nameOfTeacher = nameOfTeacher;
         }
 
         //Свойства
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
         public string NameOfDiscipline
         {

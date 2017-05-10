@@ -6,20 +6,50 @@ using System.Threading.Tasks;
 
 namespace ControlOfEducationalProcess
 {
+    public delegate void TestDelegate();
     class Program
     {
         static void Main(string[] args)
         {
-            
-            //Trial asdad = new Trial("sda", "sad");
-            Test a1 = new Test("Математика", "18.09.17", "Кирекмасов", 30, 15);
-            Exam a2 = new Exam("Литература", "19.11.17", "Санбусов", 17);
-            Trial Ran = new Exam("Русский язык", "19.11.17", "Кушкулёва", 16);
-            Trial Poz = new Test("Англ язык", "12.11.17", "Денисова", 20, 10);
-            Console.WriteLine(a1);
-            Console.WriteLine(a2);
-            Console.WriteLine(Ran);
-            Console.WriteLine(Poz);
+            try
+            {
+                Test[] MASSTEST = { new Test("Химия", "10.12.17", "Кирекмасов", 16, 15, 25, 30), new Test("Математика", "07.04.17", "Самсонов", 20, 15, 25, 30),
+            new Test("Алгебра", "18.09.17", "Юрков", 30, 15, 25, 30), new Test("Физика", "26.04.17", "Джан", 29, 15, 25, 30)};
+                
+                Exam Zan1 = new Exam();
+                
+                TestDelegate DelegateForExam = new TestDelegate(Zan1.InputInfo);
+                DelegateForExam += Zan1.OutputInfo;
+
+                Console.WriteLine("Работа делегата:");
+                DelegateForExam();
+
+                Console.WriteLine("\nИсходный массив:");
+                foreach (Test Elem in MASSTEST)
+                {
+                    Elem.OutputInfo();
+                }
+
+                Array.Sort(MASSTEST, new Test.SortByName());
+                Console.WriteLine("\nОтсортированный массив:");
+
+                foreach (Test Elem in MASSTEST)
+                {
+                    Elem.OutputInfo();
+                }
+
+                Console.WriteLine("\nВведите количество баллов:");
+                MASSTEST[2].Points = int.Parse(Console.ReadLine());           
+            }
+            catch (TestException FirstTest)
+            {
+                Console.WriteLine("Ошибка: " + FirstTest.Message);
+            }
+            catch (FormatException IX)
+            {
+                Console.WriteLine("Ошибка: " + IX.Message);
+            }
+            Console.WriteLine("Нажмите любую клавишу для выхода.");
             Console.ReadKey();
         }
     }

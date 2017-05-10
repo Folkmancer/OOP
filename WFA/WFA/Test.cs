@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 
-namespace ControlOfEducationalProcess
+namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
-    class Test : Trial
+    public class Test : Trial
     {
         private int points;
         private readonly int pointsForThree;
@@ -20,8 +20,8 @@ namespace ControlOfEducationalProcess
             this.pointsForFive = 30;
         }
 
-        public Test(string nameOfDiscipline, string date, string nameOfTeacher, int points, int pointsForThree, int pointsForFour, int pointsForFive) 
-            : base(nameOfDiscipline, date, nameOfTeacher)
+        public Test(int id, string nameOfDiscipline, string date, string nameOfTeacher, int points, int pointsForThree, int pointsForFour, int pointsForFive) 
+            : base(id, nameOfDiscipline, date, nameOfTeacher)
         {
             this.points = points;
             this.pointsForThree = pointsForThree;

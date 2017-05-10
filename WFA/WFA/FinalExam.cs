@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ControlOfEducationalProcess
+namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
-    class FinalExam : Exam
+    public class FinalExam : Exam
     {
         //Конструкторы
         
@@ -11,8 +11,8 @@ namespace ControlOfEducationalProcess
          
         }
 
-        public FinalExam(string nameOfDiscipline, string date, string nameOfTeacher, int grade) 
-            : base(nameOfDiscipline, date, nameOfTeacher, grade)
+        public FinalExam(int id, string nameOfDiscipline, string date, string nameOfTeacher, int grade) 
+            : base(id, nameOfDiscipline, date, nameOfTeacher, grade)
         {
          
         }

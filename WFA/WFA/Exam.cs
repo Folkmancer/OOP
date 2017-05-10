@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 
-namespace ControlOfEducationalProcess
+namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
-    class Exam : Trial
+    [Serializable]
+    public class Exam : Trial
     {
         private int grade;
 
@@ -14,8 +15,8 @@ namespace ControlOfEducationalProcess
             this.grade = 0;
         }
 
-        public Exam(string nameOfDiscipline, string date, string nameOfTeacher, int grade) 
-            : base(nameOfDiscipline, date, nameOfTeacher)
+        public Exam(int id, string nameOfDiscipline, string date, string nameOfTeacher, int grade)
+            : base(id, nameOfDiscipline, date, nameOfTeacher)
         {
             this.grade = grade;
         }
