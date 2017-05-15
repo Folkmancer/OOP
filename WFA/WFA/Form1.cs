@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Folkmancer.OOP.ControlOfEducationalProcess;
 
-namespace WFA
+namespace Folkmancer.OOP.GUI
 {
     public partial class Form1 : Form
     {

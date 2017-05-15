@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WFA
+namespace Folkmancer.OOP.GUI
 {
     static class Program
     {

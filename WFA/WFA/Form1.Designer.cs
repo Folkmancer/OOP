@@ -1,4 +1,4 @@
-﻿namespace WFA
+﻿namespace Folkmancer.OOP.GUI
 {
     partial class Form1
     {

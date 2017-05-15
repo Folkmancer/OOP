@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Folkmancer.OOP.ControlOfEducationalProcess;
 
-namespace WFA
+namespace Folkmancer.OOP.GUI
 {
     public partial class EditForm : Form
     {

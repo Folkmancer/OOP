@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Folkmancer.OOP.ControlOfEducationalProcess;
 
-namespace WFA
+namespace Folkmancer.OOP.GUI
 {
     public partial class AddForm : Form
     {
@@ -33,7 +33,7 @@ namespace WFA
                 string message = trouble.Message;
                 string caption = "Предупреждение!";
                 MessageBox.Show(message, caption, MessageBoxButtons.OK);
-            }   
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace WFA
                             int.Parse(this.textBox5.Text),
                             int.Parse(this.textBox6.Text),
                             int.Parse(this.textBox7.Text)
-                            
+
                         );
                         break;
                     default:
@@ -96,12 +96,12 @@ namespace WFA
         {
             if ((ID != 0) && (NOD != "") && (Date != "") && (NOT != "") && (Grade != 0))
             {
-                _mainForm.Exams.Insert(_mainForm.Exams.Count, 
+                _mainForm.Exams.Insert(_mainForm.Exams.Count,
                     new Exam(
-                        ID, 
-                        NOD, 
-                        Date, 
-                        NOT, 
+                        ID,
+                        NOD,
+                        Date,
+                        NOT,
                         Grade
                 ));
             }
@@ -124,7 +124,7 @@ namespace WFA
         }
         private void AddTest(int ID, string NOD, string Date, string NOT, int Point, int Pft, int Pffo, int Pffi)
         {
-            if ((ID != 0) && (NOD != "") && (Date != "") && (NOT != "") 
+            if ((ID != 0) && (NOD != "") && (Date != "") && (NOT != "")
                 && (Point != 0) && (Pft != 0) && (Pffo != 0) && (Pffi != 0))
             {
                 _mainForm.Exams.Insert(_mainForm.Exams.Count,
