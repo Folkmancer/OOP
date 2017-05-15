@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Resources;
 using System.IO;
@@ -17,12 +11,24 @@ namespace WFA
     public partial class Form1 : Form
     {
 
-        public List<Exam> Exams { set; get; }
+        public List<Trial> Exams { set; get; }
         
         public Form1()
         {
             InitializeComponent();
-            this.Exams = new List<Exam>();
+            this.Exams = new List<Trial>();
+            try
+            {
+                DeSerialization();
+                ViewCollection();
+            }
+            catch
+            {
+                string message = "Не удалось открыть файл!";
+                string caption = "Предупреждение!";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show(message, caption, buttons);
+            }
         }
      
 
@@ -42,10 +48,35 @@ namespace WFA
             }
             catch
             {
-
+                string message = "Отсутствует или не выбрана строка для редактирования!";
+                string caption = "Предупреждение!";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show(message, caption, buttons);
             }
         }
 
+        public void Serialization()
+        {
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+            using (FileStream fs = new FileStream("Table.xml", FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, Exams);
+            }
+        }
+
+        public void DeSerialization()
+        {
+            using (FileStream fs = new FileStream("Table.xml", FileMode.OpenOrCreate))
+            {
+                XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+                List<Trial> newExams = (List<Trial>)formatter.Deserialize(fs);
+                foreach (Trial i in newExams)
+                {
+                    this.Exams.Insert(this.Exams.Count, i);
+                }
+            }
+        }
+       
         public void Deleting()
         {
             try
@@ -62,8 +93,8 @@ namespace WFA
             }
             catch
             {
-                string message = "You did not enter a server name. Cancel this operation?";
-                string caption = "Error Detected in Input";
+                string message = "Отсутствует или не выбрана строка для удаления!";
+                string caption = "Предупреждение!";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 MessageBox.Show(message, caption, buttons);
             }
@@ -77,33 +108,51 @@ namespace WFA
             listView1.Columns.Add("Дата");
             listView1.Columns.Add("Преподаватель");
             listView1.Columns.Add("Оценка");
+            listView1.Columns.Add("Тип");
             for (int i = 0; i < this.Exams.Count; i++)
             {
-                listView1.Items.Add(Convert.ToString(Exams[i].ID));
-                listView1.Items[i].SubItems.Add(Exams[i].NameOfDiscipline);
-                listView1.Items[i].SubItems.Add(Exams[i].Date);
-                listView1.Items[i].SubItems.Add(Exams[i].NameOfTeacher);
-                listView1.Items[i].SubItems.Add(Convert.ToString(Exams[i].Grade));
+                if (this.Exams[i].GetType() == typeof(Exam))
+                {
+                    Exam Temp = (Exam)this.Exams[i];
+                    listView1.Items.Add(Convert.ToString(Temp.ID));
+                    listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
+                    listView1.Items[i].SubItems.Add(Temp.Date);
+                    listView1.Items[i].SubItems.Add(Temp.NameOfTeacher);
+                    listView1.Items[i].SubItems.Add(Convert.ToString(Temp.Grade));
+                    listView1.Items[i].SubItems.Add("Экзамен");
+                }
+                else if (this.Exams[i].GetType() == typeof(FinalExam))
+                {
+                    FinalExam Temp = (FinalExam)this.Exams[i];
+                    listView1.Items.Add(Convert.ToString(Temp.ID));
+                    listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
+                    listView1.Items[i].SubItems.Add(Temp.Date);
+                    listView1.Items[i].SubItems.Add(Temp.NameOfTeacher);
+                    listView1.Items[i].SubItems.Add(Convert.ToString(Temp.Grade));
+                    listView1.Items[i].SubItems.Add("Выпускной экзамен");
+                }
+                else if (this.Exams[i].GetType() == typeof(Test))
+                {
+                    Test Temp = (Test)this.Exams[i];
+                    listView1.Items.Add(Convert.ToString(Temp.ID));
+                    listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
+                    listView1.Items[i].SubItems.Add(Temp.Date);
+                    listView1.Items[i].SubItems.Add(Temp.NameOfTeacher);
+                    listView1.Items[i].SubItems.Add(Convert.ToString(Temp.GetGrade()));
+                    listView1.Items[i].SubItems.Add("Тест");
+                }
             }
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Adding();
+            ViewCollection();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             Adding();
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            ViewCollection();
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
             ViewCollection();
         }
 
@@ -122,11 +171,18 @@ namespace WFA
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
             Editing();
+            ViewCollection();
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             Editing();
+            ViewCollection();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Serialization();
         }
 
         ///МУСОР///
@@ -134,8 +190,6 @@ namespace WFA
         {
             toolStripButton1.Text = Local.GetString("addButton");
             toolStripMenuItem1.Text = Local.GetString("addButton");
-            toolStripButton2.Text = Local.GetString("viewButton");
-            toolStripMenuItem2.Text = Local.GetString("viewButton");
             toolStripButton3.Text = Local.GetString("deleteButton");
             toolStripMenuItem3.Text = Local.GetString("deleteButton");
             toolStripButton4.Text = Local.GetString("editButton");
@@ -175,29 +229,6 @@ namespace WFA
         private void toolStripMenuItem10_Click(object sender, EventArgs e)
         {
             LocalizationEN();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {  
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Exam>));
-            using (FileStream fs = new FileStream("Exams.xml", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Exams);
-            }  
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            using (FileStream fs = new FileStream("Exams.xml", FileMode.OpenOrCreate))
-            {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Exam>));
-                List<Exam> newExams = (List<Exam>)formatter.Deserialize(fs);
-                foreach (Exam i in newExams)
-                {
-                    this.Exams.Insert(this.Exams.Count, i);
-                    ViewCollection();
-                }
-            }
         }
     }
 }

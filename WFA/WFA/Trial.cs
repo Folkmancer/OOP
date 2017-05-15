@@ -6,6 +6,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
     [Serializable]
     [XmlInclude(typeof(Exam))]
+    [XmlInclude(typeof(FinalExam))]
     [XmlInclude(typeof(Test))]
     public abstract class Trial : IOutputInput, IComparable
     {

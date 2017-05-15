@@ -7,9 +7,9 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
     public class Test : Trial
     {
         private int points;
-        private readonly int pointsForThree;
-        private readonly int pointsForFour;
-        private readonly int pointsForFive;
+        private int pointsForThree;
+        private int pointsForFour;
+        private int pointsForFive;
 
         //Констуркторы
 
@@ -55,14 +55,17 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
         public int PointsForThree
         {
             get { return pointsForThree; }
+            set { pointsForThree = value; }
         }
         public int PointsForFour
         {
             get { return pointsForFour; }
+            set { pointsForFour = value; }
         }
         public int PointsForFive
         {
             get { return pointsForFive; }
+            set { pointsForFive = value; }
         }
 
         //Методы
