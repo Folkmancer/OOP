@@ -1,88 +1,76 @@
 ﻿using System;
 using System.Collections;
 
-namespace ControlOfEducationalProcess
+namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
-    class Test : Trial
-    {
-        private int points;
-        private readonly int pointsForThree;
-        private readonly int pointsForFour;
-        private readonly int pointsForFive;
+    [Serializable]
+    public class Test : Trial {
+        private int _points;
+        private int _pointsForThree;
+        private int _pointsForFour;
+        private int _pointsForFive;
 
         //Констуркторы
 
-        public Test() : base()
-        {
-            this.points = 0;
-            this.pointsForThree = 15;
-            this.pointsForFour = 25;
-            this.pointsForFive = 30;
+        public Test() : base() {
+            this.Points = 0;
+            this.PointsForThree = 15;
+            this.PointsForFour = 25;
+            this.PointsForFive = 30;
         }
 
-        public Test(string nameOfDiscipline, string date, string nameOfTeacher, int points, int pointsForThree, int pointsForFour, int pointsForFive) 
-            : base(nameOfDiscipline, date, nameOfTeacher)
-        {
-            this.points = points;
-            this.pointsForThree = pointsForThree;
-            this.pointsForFour = pointsForFour;
-            this.pointsForFive = pointsForFive;
+        public Test(int id, string nameOfDiscipline, string date, string nameOfTeacher, 
+            int points, int pointsForThree, int pointsForFour, int pointsForFive) 
+            : base(id, nameOfDiscipline, date, nameOfTeacher) {
+            this.Points = points;
+            this.PointsForThree = pointsForThree;
+            this.PointsForFour = pointsForFour;
+            this.PointsForFive = pointsForFive;
         }
 
         //Свойства
 
-        public int Points
-        {
-            get { return points; }
+        public int Points {
+            get { return _points; }
             set
             { 
-                if (value > 100)
-                {
+                if (value > 100) {
                     throw new TestException("Введено некорректное количество баллов!");
                 }
-                else if (value < 0)
-                {
+                else if (value < 0) {
                     throw new TestException("Количество баллов не может быть отрицательным!");
                 }
-                else
-                {
-                    points = value;
-                }
+                else { _points = value; }
             }
         }
 
-        public int PointsForThree
-        {
-            get { return pointsForThree; }
+        public int PointsForThree {
+            get { return _pointsForThree; }
+            set { _pointsForThree = value; }
         }
-        public int PointsForFour
-        {
-            get { return pointsForFour; }
+        public int PointsForFour {
+            get { return _pointsForFour; }
+            set { _pointsForFour = value; }
         }
-        public int PointsForFive
-        {
-            get { return pointsForFive; }
+        public int PointsForFive {
+            get { return _pointsForFive; }
+            set { _pointsForFive = value; }
         }
 
         //Методы
 
-        public int GetGrade()
-        {
-            if (Points >= PointsForFive) return 5;
-            else if (Points < PointsForFive && Points >= PointsForFour) return 4; 
-            else if (Points < PointsForFour && Points >= PointsForThree) return 3;
-            else return 2;
+        public int GetGrade() {
+            if (Points >= PointsForFive) { return 5; }
+            else if (Points < PointsForFive && Points >= PointsForFour) { return 4; }
+            else if (Points < PointsForFour && Points >= PointsForThree) { return 3; }
+            else { return 2; }
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Тестирование по дисциплине: " + NameOfDiscipline + ". Дата: " + Date + ". Преподаватель: " + NameOfTeacher + ". Оценка: " + GetGrade();
         }
 
-        //IOutputInput
-
-        public override void InputInfo()
-        {
+        public override void InputInfo() {
             base.InputInfo();
             Console.WriteLine("Введите количество баллов:");
             this.Points = int.Parse(Console.ReadLine());
@@ -90,15 +78,13 @@ namespace ControlOfEducationalProcess
 
         //IComparer
 
-        public class SortByPoint : IComparer
-        {
-            public int Compare(object obj1, object obj2)
-            {
+        public class SortByPoint : IComparer {
+            public int Compare(object obj1, object obj2) {
                 Test temp1 = (Test)obj1;
                 Test temp2 = (Test)obj2;
-                if (temp1.Points > temp2.Points) return 1;
-                else if (temp1.Points < temp2.Points) return -1;
-                else return 0;
+                if (temp1.Points > temp2.Points) { return 1; }
+                else if (temp1.Points < temp2.Points) { return -1; }
+                else { return  0; }
             }
         }
     }

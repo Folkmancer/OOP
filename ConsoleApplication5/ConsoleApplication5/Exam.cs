@@ -1,44 +1,37 @@
 ﻿using System;
 using System.Collections;
 
-namespace ControlOfEducationalProcess
+namespace Folkmancer.OOP.ControlOfEducationalProcess
 {
-    class Exam : Trial
-    {
-        private int grade;
+    [Serializable]
+    public class Exam : Trial {
+        private int _grade;
 
         //Конструкторы
 
-        public Exam() : base()
-        {
-            this.grade = 0;
+        public Exam() : base() {
+            this.Grade = 0;
         }
 
-        public Exam(string nameOfDiscipline, string date, string nameOfTeacher, int grade) 
-            : base(nameOfDiscipline, date, nameOfTeacher)
-        {
-            this.grade = grade;
+        public Exam(int id, string nameOfDiscipline, string date, string nameOfTeacher, int grade)
+            : base(id, nameOfDiscipline, date, nameOfTeacher) {
+            this.Grade = grade;
         }
 
         //Свойства
 
-        public int Grade
-        {
-            get { return grade; }
-            set { grade = value; }
+        public int Grade {
+            get { return _grade; }
+            set { _grade = value; }
         }
 
         //Методы
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Экзамен по дисциплине: " + NameOfDiscipline + ". Дата: " + Date + ". Оценка: " + Grade + ". Преподаватель: " + NameOfTeacher;
         }
 
-        //IOutputInput
-
-        public override void InputInfo()
-        {
+        public override void InputInfo() {
             base.InputInfo();
             Console.WriteLine("Введите оценку:");
             this.Grade = int.Parse(Console.ReadLine());
@@ -46,15 +39,18 @@ namespace ControlOfEducationalProcess
 
         //IComparer
 
-        public class SortByGrade : IComparer
-        {
-            public int Compare(object obj1, object obj2)
-            {
+        public class SortByGrade : IComparer {
+            public int Compare(object obj1, object obj2) {
                 Exam temp1 = (Exam)obj1;
                 Exam temp2 = (Exam)obj2;
-                if (temp1.Grade > temp2.Grade) return 1;
-                else if (temp1.Grade < temp2.Grade) return -1;
-                else return 0;
+                if (temp1.Grade > temp2.Grade) {
+                    return 1;
+                }
+                else if (temp1.Grade < temp2.Grade) {
+                    return -1;
+                }
+                else
+                    return 0;
             }
         }
 
