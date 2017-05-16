@@ -13,7 +13,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
             new Test("Алгебра", "18.09.17", "Юрков", 30, 15, 25, 30), new Test("Физика", "26.04.17", "Джан", 29, 15, 25, 30)};
                 
                 Exam Zan1 = new Exam();
-                
+                object sda;
                 TestDelegate DelegateForExam = new TestDelegate(Zan1.InputInfo);
                 DelegateForExam += Zan1.OutputInfo;
 

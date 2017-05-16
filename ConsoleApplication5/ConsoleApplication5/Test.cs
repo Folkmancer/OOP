@@ -66,8 +66,32 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
             else { return 2; }
         }
 
+        public override int GetHashCode()
+        {
+            return this.ID.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || !(obj is Test)) { return false; }
+            Test temp = (Test)obj;
+            return (
+                this.ID == temp.ID &&
+                this.NameOfDiscipline == temp.NameOfDiscipline &&
+                this.Date == temp.NameOfTeacher &&
+                this.NameOfTeacher == temp.NameOfTeacher &&
+                this.Points == temp.Points &&
+                this.PointsForThree == temp.PointsForThree &&
+                this.PointsForFour == temp.PointsForFour &&
+                this.PointsForFive == temp.PointsForFive
+            );
+        }
+
         public override string ToString() {
-            return "Тестирование по дисциплине: " + NameOfDiscipline + ". Дата: " + Date + ". Преподаватель: " + NameOfTeacher + ". Оценка: " + GetGrade();
+            return "Тестирование №: " + this.ID 
+                + ". По дисциплине: " + this.NameOfDiscipline 
+                + ". Дата: " + this.Date 
+                + ". Преподаватель: " + this.NameOfTeacher 
+                + ". Оценка: " + this.GetGrade();
         }
 
         public override void InputInfo() {
@@ -77,7 +101,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
         }
 
         //IComparer
-
+        
         public class SortByPoint : IComparer {
             public int Compare(object obj1, object obj2) {
                 Test temp1 = (Test)obj1;

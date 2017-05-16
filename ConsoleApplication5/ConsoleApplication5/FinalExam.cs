@@ -16,8 +16,29 @@
 
         //Методы
 
+        public override int GetHashCode()
+        {
+            return this.ID.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || !(obj is FinalExam)) { return false; }
+            FinalExam temp = (FinalExam)obj;
+            return (
+                this.ID == temp.ID &&
+                this.NameOfDiscipline == temp.NameOfDiscipline &&
+                this.Date == temp.NameOfTeacher &&
+                this.NameOfTeacher == temp.NameOfTeacher &&
+                this.Grade == temp.Grade
+            );
+        }
+
         public override string ToString() {
-            return "Выпускной экзамен по дисциплине: " + NameOfDiscipline + ". Дата: " + Date + ". Оценка: " + Grade + ". Преподаватель: " + NameOfTeacher;
+            return "Выпускной экзамен №: " + this.ID 
+                + ". По дисциплине: " + this.NameOfDiscipline
+                + ". Дата: " + this.Date
+                + ". Оценка: " + this.Grade
+                + ". Преподаватель: " + this.NameOfTeacher;
         }
     }
 }

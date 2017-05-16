@@ -53,10 +53,29 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
 
         //Методы
 
-        public override string ToString() {
-            return "Испытание по дисциплине: " + NameOfDiscipline + ". Дата: " + Date + ". Преподаватель: " + NameOfTeacher;
+        public override int GetHashCode()
+        {
+            return this.ID.GetHashCode();
         }
 
+        public override bool Equals(object obj) {
+            if (obj == null || !(obj is Trial)) { return false; }
+            Trial temp = (Trial)obj;
+            return (
+                this.ID == temp.ID &&
+                this.NameOfDiscipline == temp.NameOfDiscipline &&
+                this.Date == temp.NameOfTeacher &&
+                this.NameOfTeacher == temp.NameOfTeacher
+            );
+        }
+
+        public override string ToString() {
+            return "Испытание №: " + this.ID 
+                + ". По дисциплине: " + this.NameOfDiscipline 
+                + ". Дата: " + this.Date 
+                + ". Преподаватель: " + this.NameOfTeacher;
+        }
+   
         public virtual void InputInfo() {
             Console.WriteLine("Введите название дисциплины:");
             this._id = int.Parse(Console.ReadLine());
@@ -76,7 +95,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
 
         public int CompareTo(object obj) {
             Trial temp = (Trial)obj;
-            return String.Compare(this.NameOfDiscipline, temp.NameOfDiscipline);
+            return string.Compare(this.NameOfDiscipline, temp.NameOfDiscipline);
         }
 
         //IComparer
@@ -90,12 +109,12 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
                 else { return 0; }
             }
         }
-
+        
         public class SortByName : IComparer {
             public int Compare(object obj1, object obj2) {
                 Trial temp1 = (Trial)obj1;
                 Trial temp2 = (Trial)obj2;
-                return String.Compare(temp1.NameOfDiscipline, temp2.NameOfDiscipline);
+                return string.Compare(temp1.NameOfDiscipline, temp2.NameOfDiscipline);
             }
         }
 
@@ -103,7 +122,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
             public int Compare(object obj1, object obj2) {
                 Trial temp1 = (Trial)obj1;
                 Trial temp2 = (Trial)obj2;
-                return String.Compare(temp1.Date, temp2.Date);
+                return string.Compare(temp1.Date, temp2.Date);
             }
         }
 
@@ -111,7 +130,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
             public int Compare(object obj1, object obj2) {
                 Trial temp1 = (Trial)obj1;
                 Trial temp2 = (Trial)obj2;
-                return String.Compare(temp1.NameOfTeacher, temp2.NameOfTeacher);
+                return string.Compare(temp1.NameOfTeacher, temp2.NameOfTeacher);
             }
         }
     }
