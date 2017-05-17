@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication4
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            List<Car> cars = new List<Car> { };
-            cars.Add(new Car("Волга", "Н180ТО", 6350));
-            cars.Add(new Car("Жигули", "Т144ТО", 10350));
-            cars.Add(new Car("Нива", "С234ТО", 56350));
-            foreach (Car takeCar in cars)
+    class Program {
+        static void Main(string[] args) {
+            List<Car> _cars = new List<Car> { };
+            _cars.Add(new Car("Волга", "Н180ТО", 6350));
+            _cars.Add(new Car("Жигули", "Т144ТО", 10350));
+            _cars.Add(new Car("Нива", "С234ТО", 56350));
+            foreach (Car car in _cars)
             {
-                takeCar.ShowCar();
+                car.ShowCar();
             }
             int total = 0;
-            foreach (Car takeCar in cars)
+            foreach (Car car in _cars)
             {
-                total += takeCar.ValueMileage;
+                total += car.Mileage;
             }
             Console.WriteLine("Общий пробег составляет: {0}", total);
             Console.ReadKey();

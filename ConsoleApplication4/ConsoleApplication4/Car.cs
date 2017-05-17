@@ -1,40 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApplication4
+namespace Folkmancer.OOP.FirstClass
 {
-    class Car
-    {
-        private string carMake;
-        private string regNumber;
-        private int mileage;
-        public Car(string newCarMake, string newRegNumber, int newMileage)
-        {
-            this.carMake = newCarMake;
-            this.regNumber = newRegNumber;
-            this.mileage = newMileage;
+    class Car {
+        private string _carMake;
+        private string _regNumber;
+        private int _mileage;
+
+        public Car(string carMake, string regNumber, int mileage) {
+            this.CarMake = carMake;
+            this.RegNumber = regNumber;
+            this.Mileage = mileage;
         }
-        public string ValueCarMake
-        {
-            get { return carMake; }
-            set { carMake = value; }
+
+        public string CarMake {
+            get { return _carMake; }
+            set { _carMake = value; }
         }
-        public string ValueRegNumber
-        {
-            get { return regNumber; }
-            set { regNumber = value; }
+
+        public string RegNumber {
+            get { return _regNumber; }
+            set { _regNumber = value; }
         }
-        public int ValueMileage
-        {
-            get { return mileage; }
-            set { mileage = value; }
+
+        public int Mileage {
+            get { return _mileage; }
+            set { _mileage = value; }
         }
-        public void ShowCar()
-        {
-            Console.WriteLine("Марка автомобиля {0}, регистрационный номер {1}, пробег {2}", carMake, regNumber, mileage);
+
+        public void ShowCar() {
+            Console.WriteLine("Марка автомобиля {0}, регистрационный номер {1}, пробег {2}", CarMake, RegNumber, Mileage);
         }
     }
 }
