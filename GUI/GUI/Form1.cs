@@ -1,118 +1,118 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Resources;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+
 using Folkmancer.OOP.ControlOfEducationalProcess;
 
-namespace Folkmancer.OOP.GUI
-{
-    public partial class Form1 : Form
-    {
+namespace Folkmancer.OOP.GUI {
+    public partial class Form1 : Form {
 
         public List<Trial> Exams { set; get; }
-        
-        public Form1()
-        {
+        public bool StatusOfChange { set; get; }
+
+        public Form1() {
             InitializeComponent();
             this.Exams = new List<Trial>();
-            try
-            {
+            this.StatusOfChange = false;
+            ViewCollection();
+            try {
                 DeSerialization();
-                ViewCollection();
             }
-            catch
-            {
-                string message = "Не удалось открыть файл!";
+            catch {
+                string message = "Вы - пидор!";
                 string caption = "Предупреждение!";
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
-                MessageBox.Show(message, caption, buttons);
+                MessageBoxIcon icon = MessageBoxIcon.Hand;
+                MessageBox.Show(message, caption, buttons, icon);
             }
         }
      
 
-        public void Adding()
-        {
-            AddForm newForm = new AddForm(this);
-            newForm.ShowDialog();
+        public string SpaceDeleting(string line) {
+            line = line.Trim();
+            while (line.Contains("  ") == true) {
+                line = line.Remove(line.IndexOf("  "), 1);
+            }
+            return line;
         }
 
-        public void Editing()
-        {
-            try
-            {
+        public void Adding() {
+            AddForm form = new AddForm(this);
+            form.ShowDialog();
+        }
+
+        public void Editing() {
+            try {
                 int index = listView1.FocusedItem.Index;
-                EditForm newForm = new EditForm(this, index);
-                newForm.ShowDialog();
+                EditForm form = new EditForm(this, index);
+                form.ShowDialog();
             }
-            catch
-            {
+            catch {
                 string message = "Отсутствует или не выбрана строка для редактирования!";
-                string caption = "Предупреждение!";
+                string caption = "Ошибка";
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
-                MessageBox.Show(message, caption, buttons);
+                MessageBoxIcon icon = MessageBoxIcon.Error;
+                MessageBox.Show(message, caption, buttons, icon);
             }
         }
 
-        public void Serialization()
-        {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-            using (FileStream fs = new FileStream("Table.xml", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Exams);
-            }
-        }
-
-        public void DeSerialization()
-        {
-            using (FileStream fs = new FileStream("Table.xml", FileMode.OpenOrCreate))
-            {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-                List<Trial> newExams = (List<Trial>)formatter.Deserialize(fs);
-                foreach (Trial i in newExams)
-                {
-                    this.Exams.Insert(this.Exams.Count, i);
-                }
-            }
-        }
-       
-        public void Deleting()
-        {
-            try
-            {
-                int delIndex = listView1.FocusedItem.Index;
-                string message = "Вы уверены, что хотите удалить эту запись?";
-                string caption = "Предупреждение!";
-                DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                {
-                    listView1.Items[delIndex].Remove();
-                    Exams.RemoveAt(delIndex);
-                }
-            }
-            catch
-            {
-                string message = "Отсутствует или не выбрана строка для удаления!";
-                string caption = "Предупреждение!";
+        public void Deleting() {
+            try {
+                int index = listView1.FocusedItem.Index;
+                string message = "Вы уверены, что хотите удалить эту запись?\n" + Exams[index].ToString();
+                string caption = "Внимание";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                MessageBox.Show(message, caption, buttons);
+                MessageBoxIcon icon = MessageBoxIcon.Question;
+                DialogResult result = MessageBox.Show(message, caption, buttons, icon);
+                if (result == DialogResult.Yes) {
+                    listView1.Items[index].Remove();
+                    Exams.RemoveAt(index);
+                }
+            }
+            catch {
+                string message = "Отсутствует или не выбрана строка для удаления!";
+                string caption = "Ошибка";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBoxIcon icon = MessageBoxIcon.Error;
+                MessageBox.Show(message, caption, buttons, icon);
             }
         }
 
-        public void ViewCollection()
-        {
+        public void Help() {
+            string message = (
+                "Добавление\n" +
+                "Кнопка \"Добавить\" открывает дополнительную форму ввода данных.\n" +
+                "При добавлении необходимо заполнить все доступные поля.\n" +
+                "\nУдаление\n" +
+                "Кнопка \"Удалить\" удаляет выбранную запись из таблицы.\n" +
+                "\nРедактирование\n" +
+                "Кнопка \"Редактировать\" открывает дополнительную форму " +
+                "для редактирования выбранной записи из таблицы.\n"
+            );
+            string caption = "Справка";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            MessageBoxIcon icon = MessageBoxIcon.Information;
+            MessageBox.Show(message, caption, buttons, icon);
+        }
+
+        public void ViewCollection() {
             listView1.Clear();
             listView1.Columns.Add("Идентификатор");
+            listView1.Columns[0].Width = 100;
             listView1.Columns.Add("Предмет");
+            listView1.Columns[1].Width = 120;
             listView1.Columns.Add("Дата");
+            listView1.Columns[2].Width = 80;
             listView1.Columns.Add("Преподаватель");
+            listView1.Columns[3].Width = 120;
             listView1.Columns.Add("Оценка");
+            listView1.Columns[4].Width = 50;
             listView1.Columns.Add("Тип");
-            for (int i = 0; i < this.Exams.Count; i++)
-            {
-                if (this.Exams[i].GetType() == typeof(Exam))
-                {
+            listView1.Columns[5].Width = 120;
+            for (int i = 0; i < this.Exams.Count; i++) {
+                if (this.Exams[i].GetType() == typeof(Exam)) {
                     Exam Temp = (Exam)this.Exams[i];
                     listView1.Items.Add(Convert.ToString(Temp.ID));
                     listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
@@ -121,8 +121,7 @@ namespace Folkmancer.OOP.GUI
                     listView1.Items[i].SubItems.Add(Convert.ToString(Temp.Grade));
                     listView1.Items[i].SubItems.Add("Экзамен");
                 }
-                else if (this.Exams[i].GetType() == typeof(FinalExam))
-                {
+                else if (this.Exams[i].GetType() == typeof(FinalExam)) {
                     FinalExam Temp = (FinalExam)this.Exams[i];
                     listView1.Items.Add(Convert.ToString(Temp.ID));
                     listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
@@ -131,8 +130,7 @@ namespace Folkmancer.OOP.GUI
                     listView1.Items[i].SubItems.Add(Convert.ToString(Temp.Grade));
                     listView1.Items[i].SubItems.Add("Выпускной экзамен");
                 }
-                else if (this.Exams[i].GetType() == typeof(Test))
-                {
+                else if (this.Exams[i].GetType() == typeof(Test)) {
                     Test Temp = (Test)this.Exams[i];
                     listView1.Items.Add(Convert.ToString(Temp.ID));
                     listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
@@ -144,91 +142,72 @@ namespace Folkmancer.OOP.GUI
             }
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+
+        public void Serialization() {
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+            using (FileStream data = new FileStream("Table.xml", FileMode.OpenOrCreate)) {
+                formatter.Serialize(data, Exams);
+            }
+        }
+
+        public void DeSerialization() {
+            using (FileStream data = new FileStream("Table.xml", FileMode.OpenOrCreate)) {
+                XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+                List<Trial> listObj = (List<Trial>)formatter.Deserialize(data);
+                foreach (Trial i in listObj) {
+                    this.Exams.Insert(this.Exams.Count, i);
+                }
+            }
+        }
+
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e) {
             Adding();
             ViewCollection();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton1_Click(object sender, EventArgs e) {
             Adding();
             ViewCollection();
         }
 
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem2_Click(object sender, EventArgs e) {
             Deleting();
             ViewCollection();
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton2_Click(object sender, EventArgs e) {
             Deleting();
             ViewCollection();
         }
 
-        private void toolStripMenuItem4_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem3_Click(object sender, EventArgs e) {
             Editing();
             ViewCollection();
         }
 
-        private void toolStripButton4_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton3_Click(object sender, EventArgs e) {
             Editing();
             ViewCollection();
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Serialization();
+        private void toolStripMenuItem4_Click(object sender, EventArgs e) {
+            Help();
         }
 
-        ///МУСОР///
-        private void BodyLocalization(ResourceManager Local)
-        {
-            toolStripButton1.Text = Local.GetString("addButton");
-            toolStripMenuItem1.Text = Local.GetString("addButton");
-            toolStripButton3.Text = Local.GetString("deleteButton");
-            toolStripMenuItem3.Text = Local.GetString("deleteButton");
-            toolStripButton4.Text = Local.GetString("editButton");
-            toolStripMenuItem4.Text = Local.GetString("editButton");
-            toolStripButton5.Text = Local.GetString("helpButton");
-            toolStripMenuItem5.Text = Local.GetString("helpButton");
-            toolStripDropDownButton1.Text = Local.GetString("langButton");
-            toolStripMenuItem6.Text = Local.GetString("langButton");
+        private void toolStripButton4_Click(object sender, EventArgs e) {
+            Help();
         }
 
-        private void LocalizationRU()
-        {
-            BodyLocalization(new ResourceManager("WFA.LocalizationStrings", typeof(Form1).Assembly));
-        }
-
-        private void LocalizationEN()
-        {
-
-            BodyLocalization(new ResourceManager("WFA.LocalizationStrings.en_EN", typeof(Form1).Assembly));
-        }
-
-        private void toolStripMenuItem7_Click(object sender, EventArgs e)
-        {
-            LocalizationRU();
-        }
-
-        private void toolStripMenuItem8_Click(object sender, EventArgs e)
-        {
-            LocalizationEN();
-        }
-
-        private void toolStripMenuItem9_Click(object sender, EventArgs e)
-        {
-            LocalizationRU();
-        }
-
-        private void toolStripMenuItem10_Click(object sender, EventArgs e)
-        {
-            LocalizationEN();
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
+            if (StatusOfChange == true) {
+                string message = "Хотите ли вы сохранить изменения?";
+                string caption = "Внимание";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                MessageBoxIcon icon = MessageBoxIcon.Question;
+                DialogResult result = MessageBox.Show(message, caption, buttons, icon);
+                if (result == DialogResult.Yes) { Serialization(); }
+            } 
         }
     }
 }

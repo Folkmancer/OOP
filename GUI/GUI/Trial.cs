@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Xml.Serialization;
 
-namespace Folkmancer.OOP.ControlOfEducationalProcess
-{
+namespace Folkmancer.OOP.ControlOfEducationalProcess {
     [Serializable]
     [XmlInclude(typeof(Exam))]
     [XmlInclude(typeof(FinalExam))]
@@ -53,8 +52,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
 
         //Методы
 
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return this.ID.GetHashCode();
         }
 
@@ -70,12 +68,12 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
         }
 
         public override string ToString() {
-            return "Испытание №: " + this.ID 
-                + ". По дисциплине: " + this.NameOfDiscipline 
-                + ". Дата: " + this.Date 
+            return "Испытание №: " + this.ID
+                + ". По дисциплине: " + this.NameOfDiscipline
+                + ". Дата: " + this.Date
                 + ". Преподаватель: " + this.NameOfTeacher;
         }
-   
+
         public virtual void InputInfo() {
             Console.WriteLine("Введите название дисциплины:");
             this._id = int.Parse(Console.ReadLine());
@@ -109,7 +107,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
                 else { return 0; }
             }
         }
-        
+
         public class SortByName : IComparer {
             public int Compare(object obj1, object obj2) {
                 Trial temp1 = (Trial)obj1;

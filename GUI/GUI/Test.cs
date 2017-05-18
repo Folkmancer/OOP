@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace Folkmancer.OOP.ControlOfEducationalProcess
-{
+namespace Folkmancer.OOP.ControlOfEducationalProcess {
     [Serializable]
     public class Test : Trial {
         private int _points;
@@ -19,8 +18,8 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
             this.PointsForFive = 30;
         }
 
-        public Test(int id, string nameOfDiscipline, string date, string nameOfTeacher, 
-            int points, int pointsForThree, int pointsForFour, int pointsForFive) 
+        public Test(int id, string nameOfDiscipline, string date, string nameOfTeacher,
+            int points, int pointsForThree, int pointsForFour, int pointsForFive)
             : base(id, nameOfDiscipline, date, nameOfTeacher) {
             this.Points = points;
             this.PointsForThree = pointsForThree;
@@ -32,8 +31,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
 
         public int Points {
             get { return _points; }
-            set
-            { 
+            set {
                 if (value > 100) {
                     throw new TestException("Введено некорректное количество баллов!");
                 }
@@ -66,8 +64,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
             else { return 2; }
         }
 
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return this.ID.GetHashCode();
         }
 
@@ -87,10 +84,10 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
         }
 
         public override string ToString() {
-            return "Тестирование №: " + this.ID 
-                + ". По дисциплине: " + this.NameOfDiscipline 
-                + ". Дата: " + this.Date 
-                + ". Преподаватель: " + this.NameOfTeacher 
+            return "Тестирование №: " + this.ID
+                + ". По дисциплине: " + this.NameOfDiscipline
+                + ". Дата: " + this.Date
+                + ". Преподаватель: " + this.NameOfTeacher
                 + ". Оценка: " + this.GetGrade();
         }
 
@@ -101,14 +98,14 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
         }
 
         //IComparer
-        
+
         public class SortByPoint : IComparer {
             public int Compare(object obj1, object obj2) {
                 Test temp1 = (Test)obj1;
                 Test temp2 = (Test)obj2;
                 if (temp1.Points > temp2.Points) { return 1; }
                 else if (temp1.Points < temp2.Points) { return -1; }
-                else { return  0; }
+                else { return 0; }
             }
         }
     }

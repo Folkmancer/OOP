@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace Folkmancer.OOP.ControlOfEducationalProcess
-{
+namespace Folkmancer.OOP.ControlOfEducationalProcess {
     [Serializable]
     public class Exam : Trial {
         private int _grade;
@@ -27,8 +26,7 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
 
         //Методы
 
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return this.ID.GetHashCode();
         }
 
@@ -45,11 +43,11 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess
         }
 
         public override string ToString() {
-            return "Экзамен №: " + this.ID 
-                + ". По дисциплине: " + this.NameOfDiscipline 
-                + ". Дата: " + this.Date 
-                + ". Оценка: " + this.Grade 
-                + ". Преподаватель: " + this.NameOfTeacher;   
+            return "Экзамен №: " + this.ID
+                + ". По дисциплине: " + this.NameOfDiscipline
+                + ". Дата: " + this.Date
+                + ". Оценка: " + this.Grade
+                + ". Преподаватель: " + this.NameOfTeacher;
         }
 
         public override void InputInfo() {

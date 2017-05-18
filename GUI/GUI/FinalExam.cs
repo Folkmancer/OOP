@@ -1,23 +1,20 @@
-﻿namespace Folkmancer.OOP.ControlOfEducationalProcess
-{
-    public class FinalExam : Exam
-    {
+﻿namespace Folkmancer.OOP.ControlOfEducationalProcess {
+    public class FinalExam : Exam {
         //Конструкторы
-        
-        public FinalExam() 
+
+        public FinalExam()
             : base() {
-         
+
         }
 
-        public FinalExam(int id, string nameOfDiscipline, string date, string nameOfTeacher, int grade) 
+        public FinalExam(int id, string nameOfDiscipline, string date, string nameOfTeacher, int grade)
             : base(id, nameOfDiscipline, date, nameOfTeacher, grade) {
-         
+
         }
 
         //Методы
 
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return this.ID.GetHashCode();
         }
 
@@ -34,7 +31,7 @@
         }
 
         public override string ToString() {
-            return "Выпускной экзамен №: " + this.ID 
+            return "Выпускной экзамен №: " + this.ID
                 + ". По дисциплине: " + this.NameOfDiscipline
                 + ". Дата: " + this.Date
                 + ". Оценка: " + this.Grade

@@ -1,6 +1,5 @@
-﻿namespace Folkmancer.OOP.ControlOfEducationalProcess
-{
-    interface IInputOutput {
+﻿namespace Folkmancer.OOP.ControlOfEducationalProcess {
+    public interface IInputOutput {
         void InputInfo();
         void OutputInfo();
     }
