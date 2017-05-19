@@ -10,15 +10,18 @@ namespace Folkmancer.OOP.GUI {
     public partial class Form1 : Form {
 
         public List<Trial> Exams { set; get; }
+        public List<int> UniqId { set; get; }
         public bool StatusOfChange { set; get; }
 
         public Form1() {
             InitializeComponent();
             this.Exams = new List<Trial>();
-            this.StatusOfChange = false;
-            ViewCollection();
+            this.UniqId = new List<int>();
+            this.StatusOfChange = false; 
             try {
-                DeSerialization();
+              //  Deserialization();
+                huh();
+                ViewCollection();
             }
             catch {
                 string message = "Вы - пидор!";
@@ -150,16 +153,60 @@ namespace Folkmancer.OOP.GUI {
             }
         }
 
-        public void DeSerialization() {
+        public void Deserialization() {
             using (FileStream data = new FileStream("Table.xml", FileMode.OpenOrCreate)) {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
                 List<Trial> listObj = (List<Trial>)formatter.Deserialize(data);
                 foreach (Trial i in listObj) {
                     this.Exams.Insert(this.Exams.Count, i);
+                    this.UniqId.Insert(this.UniqId.Count, i.ID);
+                }
+            } 
+        }
+
+        public void huh() {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.InitialDirectory = Application.StartupPath;
+            openFileDialog1.Filter = "xml files (*.xml)|*.xml";
+            openFileDialog1.FilterIndex = 0;
+            openFileDialog1.RestoreDirectory = true;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                try {
+                    if ((openFileDialog1.OpenFile()) != null) {
+                        using (FileStream data = File.OpenRead(openFileDialog1.FileName)) {
+                            XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+                            List<Trial> listObj = (List<Trial>)formatter.Deserialize(data);
+                            foreach (Trial i in listObj) {
+                                this.Exams.Insert(this.Exams.Count, i);
+                                this.UniqId.Insert(this.UniqId.Count, i.ID);
+                            }
+                        }
+                    } 
+                }
+                catch (Exception ex) {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
             }
         }
 
+        public void huh1() {
+            SaveFileDialog openFileDialog1 = new SaveFileDialog();
+            openFileDialog1.InitialDirectory = Application.StartupPath;
+            openFileDialog1.Filter = "XML files (*.xml)|*.xml";
+            openFileDialog1.FilterIndex = 0;
+            openFileDialog1.RestoreDirectory = true;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+                try {
+                    using (FileStream data = File.OpenWrite(openFileDialog1.FileName)) {
+                        XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+                        formatter.Serialize(data, Exams);
+                    }
+                }
+                catch (Exception ex) {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+        }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
             Adding();
@@ -206,8 +253,11 @@ namespace Folkmancer.OOP.GUI {
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 MessageBoxIcon icon = MessageBoxIcon.Question;
                 DialogResult result = MessageBox.Show(message, caption, buttons, icon);
-                if (result == DialogResult.Yes) { Serialization(); }
-            } 
+            //    if (result == DialogResult.Yes) { Serialization(); }
+               // if (result == DialogResult.Yes) { huh1(); }
+                
+            }
+            huh1();
         }
     }
 }

@@ -16,10 +16,11 @@ namespace Folkmancer.OOP.GUI {
 
         private void Adding(int index) {
             if (this.textBox1.Text == "") { throw new FormatException("Введите идентификатор."); }
+            if (_mainForm.UniqId.Contains(int.Parse(this.textBox1.Text))) { throw new FormatException("Такой идентификатор уже существует."); }
             if ((this._mainForm.SpaceDeleting(this.textBox2.Text)) == "") { throw new FormatException("Введите предмет."); }
             if ((this._mainForm.SpaceDeleting(this.textBox3.Text)) == "") { throw new FormatException("Введите преподавателя."); }
-            if (this.comboBox2.Enabled == true) {
-                if (this.comboBox2.Text == "") {  throw new FormatException("Введите оценку."); }
+            if (this.comboBox1.Enabled == true) {
+                if (this.comboBox1.Text == "") {  throw new FormatException("Введите оценку."); }
             }
             if (this.textBox4.Enabled == true) {
                 if (this.textBox4.Text == "") {  throw new FormatException("Введите баллы."); }
@@ -37,6 +38,7 @@ namespace Folkmancer.OOP.GUI {
                             _mainForm.SpaceDeleting(this.textBox3.Text),
                             int.Parse(this.comboBox1.Text)
                     ));
+                    _mainForm.UniqId.Add(int.Parse(this.textBox1.Text));
                     _mainForm.StatusOfChange = true;
                     break;
                 case 1:
@@ -48,6 +50,7 @@ namespace Folkmancer.OOP.GUI {
                            _mainForm.SpaceDeleting(this.textBox3.Text),
                            int.Parse(this.comboBox1.Text)
                     ));
+                    _mainForm.UniqId.Add(int.Parse(this.textBox1.Text));
                     _mainForm.StatusOfChange = true;
                     break;
                 case 2:
@@ -62,6 +65,7 @@ namespace Folkmancer.OOP.GUI {
                             int.Parse(this.textBox6.Text),
                             int.Parse(this.textBox7.Text)
                     ));
+                    _mainForm.UniqId.Add(int.Parse(this.textBox1.Text));
                     _mainForm.StatusOfChange = true;
                     break;
                 default:
@@ -75,6 +79,13 @@ namespace Folkmancer.OOP.GUI {
                 int index = this.comboBox2.SelectedIndex;
                 Adding(index);
                 this.Close();
+            }
+            catch (OverflowException) {
+                string message = "Выход значения за возможный диапазон";
+                string caption = "Ошибка";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBoxIcon icon = MessageBoxIcon.Error;
+                MessageBox.Show(message, caption, buttons, icon);
             }
             catch (Exception trouble) {
                 string message = trouble.Message;

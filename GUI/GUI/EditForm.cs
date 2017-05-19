@@ -62,6 +62,7 @@ namespace Folkmancer.OOP.GUI {
 
         private void Editing(int index) {
             if (this.textBox1.Text == "") { throw new FormatException("Введите идентификатор."); }
+            if (_mainForm.UniqId.Contains(int.Parse(this.textBox1.Text))) { throw new FormatException("Такой идентификатор уже существует."); }
             if ((this._mainForm.SpaceDeleting(this.textBox2.Text)) == "") { throw new FormatException("Введите предмет."); }
             if ((this._mainForm.SpaceDeleting(this.textBox3.Text)) == "") { throw new FormatException("Введите преподавателя."); }
             if (this.comboBox1.Enabled == true) {
@@ -81,6 +82,7 @@ namespace Folkmancer.OOP.GUI {
                    _mainForm.SpaceDeleting(this.textBox3.Text),
                    int.Parse(this.comboBox1.Text)
                 );
+                _mainForm.UniqId.Insert(index, (int.Parse(this.textBox1.Text)));
                 _mainForm.StatusOfChange = true;
             }
             else if (_mainForm.Exams[index].GetType() == typeof(FinalExam)) {
@@ -91,6 +93,7 @@ namespace Folkmancer.OOP.GUI {
                    _mainForm.SpaceDeleting(this.textBox3.Text),
                    int.Parse(this.comboBox1.Text)
                 );
+                _mainForm.UniqId.Insert(index, (int.Parse(this.textBox1.Text)));
                 _mainForm.StatusOfChange = true;
             }
             else if (_mainForm.Exams[index].GetType() == typeof(Test)) {
@@ -104,6 +107,7 @@ namespace Folkmancer.OOP.GUI {
                    int.Parse(this.textBox6.Text),
                    int.Parse(this.textBox7.Text)
                 );
+                _mainForm.UniqId.Insert(index, (int.Parse(this.textBox1.Text)));
                 _mainForm.StatusOfChange = true;
             }
         }
@@ -113,6 +117,13 @@ namespace Folkmancer.OOP.GUI {
             try {
                 Editing(_index);
                 this.Close();
+            }
+            catch (OverflowException) {
+                string message = "Выход значения за возможный диапазон";
+                string caption = "Ошибка";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBoxIcon icon = MessageBoxIcon.Error;
+                MessageBox.Show(message, caption, buttons, icon);
             }
             catch (Exception trouble) {
                 string message = trouble.Message;
