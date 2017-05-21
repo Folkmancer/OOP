@@ -9,27 +9,25 @@ using Folkmancer.OOP.ControlOfEducationalProcess;
 namespace Folkmancer.OOP.GUI {
     public partial class Form1 : Form {
 
+        private string _pathXmlFile;
+        public bool StatusOfChange { set; get; }
         public List<Trial> Exams { set; get; }
         public List<int> UniqId { set; get; }
-        public bool StatusOfChange { set; get; }
+ 
 
         public Form1() {
             InitializeComponent();
             this.Exams = new List<Trial>();
             this.UniqId = new List<int>();
-            this.StatusOfChange = false; 
-            try {
-              //  Deserialization();
-                huh();
-                ViewCollection();
-            }
-            catch {
-                string message = "Вы - пидор!";
-                string caption = "Предупреждение!";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                MessageBoxIcon icon = MessageBoxIcon.Hand;
-                MessageBox.Show(message, caption, buttons, icon);
-            }
+            this.StatusOfChange = false;
+            this._pathXmlFile = "";
+            this.listView1.Enabled = false;
+            this.saveToolStripMenuItem.Enabled = false;
+            this.saveHowToolStripMenuItem.Enabled = false;
+            this.addToolStripMenuItem.Enabled = false;
+            this.delToolStripMenuItem.Enabled = false;
+            this.editingToolStripMenuItem.Enabled = false;
+            ViewCollection(); 
         }
      
 
@@ -60,7 +58,7 @@ namespace Folkmancer.OOP.GUI {
                 MessageBox.Show(message, caption, buttons, icon);
             }
         }
-
+        
         public void Deleting() {
             try {
                 int index = listView1.FocusedItem.Index;
@@ -100,16 +98,25 @@ namespace Folkmancer.OOP.GUI {
             MessageBox.Show(message, caption, buttons, icon);
         }
 
+        private void Create() {
+            this.listView1.Enabled = true;
+            this.saveToolStripMenuItem.Enabled = true;
+            this.saveHowToolStripMenuItem.Enabled = true;
+            this.addToolStripMenuItem.Enabled = true;
+            this.delToolStripMenuItem.Enabled = true;
+            this.editingToolStripMenuItem.Enabled = true;
+        }
+
         public void ViewCollection() {
             listView1.Clear();
             listView1.Columns.Add("Идентификатор");
             listView1.Columns[0].Width = 100;
             listView1.Columns.Add("Предмет");
-            listView1.Columns[1].Width = 120;
+            listView1.Columns[1].Width = 115;
             listView1.Columns.Add("Дата");
             listView1.Columns[2].Width = 80;
             listView1.Columns.Add("Преподаватель");
-            listView1.Columns[3].Width = 120;
+            listView1.Columns[3].Width = 115;
             listView1.Columns.Add("Оценка");
             listView1.Columns[4].Width = 50;
             listView1.Columns.Add("Тип");
@@ -146,118 +153,143 @@ namespace Folkmancer.OOP.GUI {
         }
 
 
-        public void Serialization() {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-            using (FileStream data = new FileStream("Table.xml", FileMode.OpenOrCreate)) {
-                formatter.Serialize(data, Exams);
-            }
-        }
-
-        public void Deserialization() {
-            using (FileStream data = new FileStream("Table.xml", FileMode.OpenOrCreate)) {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-                List<Trial> listObj = (List<Trial>)formatter.Deserialize(data);
-                foreach (Trial i in listObj) {
-                    this.Exams.Insert(this.Exams.Count, i);
-                    this.UniqId.Insert(this.UniqId.Count, i.ID);
-                }
-            } 
-        }
-
-        public void huh() {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.InitialDirectory = Application.StartupPath;
-            openFileDialog1.Filter = "xml files (*.xml)|*.xml";
-            openFileDialog1.FilterIndex = 0;
-            openFileDialog1.RestoreDirectory = true;
-            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+        public void OpenFile() {
+            OpenFileDialog XmlDataFile = new OpenFileDialog();
+            XmlDataFile.InitialDirectory = Application.StartupPath;
+            XmlDataFile.Filter = "xml files (*.xml)|*.xml";
+            XmlDataFile.FilterIndex = 0;
+            XmlDataFile.RestoreDirectory = true;
+            if (XmlDataFile.ShowDialog() == DialogResult.OK) {
                 try {
-                    if ((openFileDialog1.OpenFile()) != null) {
-                        using (FileStream data = File.OpenRead(openFileDialog1.FileName)) {
+                    if ((XmlDataFile.OpenFile()) != null) {
+                        using (FileStream fStream = File.OpenRead(XmlDataFile.FileName)) {
                             XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-                            List<Trial> listObj = (List<Trial>)formatter.Deserialize(data);
+                            List<Trial> listObj = (List<Trial>)formatter.Deserialize(fStream);
+                            this.Exams.Clear();
+                            this.UniqId.Clear();
                             foreach (Trial i in listObj) {
                                 this.Exams.Insert(this.Exams.Count, i);
                                 this.UniqId.Insert(this.UniqId.Count, i.ID);
                             }
+                            fStream.Close();
                         }
-                    } 
-                }
-                catch (Exception ex) {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
-                }
-            }
-        }
-
-        public void huh1() {
-            SaveFileDialog openFileDialog1 = new SaveFileDialog();
-            openFileDialog1.InitialDirectory = Application.StartupPath;
-            openFileDialog1.Filter = "XML files (*.xml)|*.xml";
-            openFileDialog1.FilterIndex = 0;
-            openFileDialog1.RestoreDirectory = true;
-            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
-                try {
-                    using (FileStream data = File.OpenWrite(openFileDialog1.FileName)) {
-                        XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-                        formatter.Serialize(data, Exams);
                     }
                 }
                 catch (Exception ex) {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    MessageBox.Show("Ошибка: невозможно прочитать файл с диска. Original error: " + ex.Message);
                 }
+                _pathXmlFile = XmlDataFile.FileName;
             }
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e) {
+        public void SaveFile(string path) {
+            if (path != "") {
+                try {
+                    XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+                    using (FileStream fStream = new FileStream(path, FileMode.Create)) {
+                        formatter.Serialize(fStream, Exams);
+                        fStream.Close();
+                    }   
+                }
+                catch (Exception ex) {
+                    MessageBox.Show("Ошибка: невозможно прочитать файл с диска. Original error: " + ex.Message);
+                }
+                this.StatusOfChange = false;
+            }
+        }
+        
+        public void SaveHowFile() {
+            SaveFileDialog XmlDataFile = new SaveFileDialog();
+            XmlDataFile.InitialDirectory = Application.StartupPath;
+            XmlDataFile.Filter = "XML files (*.xml)|*.xml";
+            XmlDataFile.FilterIndex = 0;
+            XmlDataFile.RestoreDirectory = true;
+            if (XmlDataFile.ShowDialog() == DialogResult.OK) {
+                try {
+                    XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
+                    using (FileStream fStream = File.OpenWrite(XmlDataFile.FileName)) {
+                        formatter.Serialize(fStream, Exams);
+                        fStream.Close();
+                    }
+                }
+                catch (Exception ex) {
+                    MessageBox.Show("Ошибка: невозможно прочитать файл с диска. Original error: " + ex.Message);
+                }
+            }
+            this._pathXmlFile = XmlDataFile.FileName;
+            this.StatusOfChange = false;
+        }
+
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e) {
+            OpenFile();
+            Create();
+            ViewCollection();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (this._pathXmlFile != "") { SaveFile(this._pathXmlFile); }
+            else { SaveHowFile(); }
+        }
+
+        private void saveHowToolStripMenuItem_Click(object sender, EventArgs e) {
+            SaveHowFile();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+            Application.Exit();
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e) {
             Adding();
             ViewCollection();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e) {
-            Adding();
-            ViewCollection();
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e) {
+        private void delToolStripMenuItem_Click(object sender, EventArgs e) {
             Deleting();
             ViewCollection();
+            this.StatusOfChange = true;
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e) {
-            Deleting();
-            ViewCollection();
-        }
-
-        private void toolStripMenuItem3_Click(object sender, EventArgs e) {
+        private void editToolStripMenuItem_Click(object sender, EventArgs e) {
             Editing();
             ViewCollection();
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e) {
-            Editing();
-            ViewCollection();
-        }
-
-        private void toolStripMenuItem4_Click(object sender, EventArgs e) {
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
             Help();
         }
 
-        private void toolStripButton4_Click(object sender, EventArgs e) {
-            Help();
+        private void createToolStripMenuItem_Click(object sender, EventArgs e) {
+            Create();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-            if (StatusOfChange == true) {
+            if (this.StatusOfChange == true) {
                 string message = "Хотите ли вы сохранить изменения?";
                 string caption = "Внимание";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 MessageBoxIcon icon = MessageBoxIcon.Question;
                 DialogResult result = MessageBox.Show(message, caption, buttons, icon);
-            //    if (result == DialogResult.Yes) { Serialization(); }
-               // if (result == DialogResult.Yes) { huh1(); }
-                
+                if (result == DialogResult.Yes) {
+                    if (this._pathXmlFile != "") { SaveFile(this._pathXmlFile); }
+                    else { SaveHowFile(); }
+                }
             }
-            huh1();
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e) {
+            this.listView1.Columns[0].Width = (int)((this.listView1.Size.Width) * 0.16);
+            this.listView1.Columns[1].Width = (int)((this.listView1.Size.Width) * 0.2);
+            this.listView1.Columns[2].Width = (int)((this.listView1.Size.Width) * 0.14);
+            this.listView1.Columns[3].Width = (int)((this.listView1.Size.Width) * 0.2);
+            this.listView1.Columns[4].Width = (int)((this.listView1.Size.Width) * 0.09);
+            this.listView1.Columns[5].Width = (int)((this.listView1.Size.Width) * 0.21);
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+            AboutBox1 AboutForm = new AboutBox1();
+            AboutForm.ShowDialog();
         }
     }
 }
