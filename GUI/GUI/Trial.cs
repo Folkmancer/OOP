@@ -50,7 +50,15 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess {
             set { _nameOfTeacher = value; }
         }
 
+        public virtual int GetGrade() {
+            return -1;
+        }
+
         //Методы
+
+        public virtual string TypeOfTrial() {
+            return "Испытание";
+        }
 
         public override int GetHashCode() {
             return this.ID.GetHashCode();

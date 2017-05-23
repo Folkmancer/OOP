@@ -26,6 +26,10 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess {
 
         //Методы
 
+        public override string TypeOfTrial() {
+            return "Экзамен";
+        }
+
         public override int GetHashCode() {
             return this.ID.GetHashCode();
         }
@@ -54,6 +58,10 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess {
             base.InputInfo();
             Console.WriteLine("Введите оценку:");
             this.Grade = int.Parse(Console.ReadLine());
+        }
+
+        public override int GetGrade() {
+            return this.Grade;
         }
 
         //IComparer

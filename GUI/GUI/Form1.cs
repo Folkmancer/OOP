@@ -10,45 +10,48 @@ namespace Folkmancer.OOP.GUI {
     public partial class Form1 : Form {
 
         private string _pathXmlFile;
+        private bool[] _switches = { false, false, false, false, false, false };
         public bool StatusOfChange { set; get; }
-        public List<Trial> Exams { set; get; }
+        public List<Trial> ListElements { set; get; }
         public List<int> UniqId { set; get; }
  
 
         public Form1() {
             InitializeComponent();
-            this.Exams = new List<Trial>();
-            this.UniqId = new List<int>();
-            this.StatusOfChange = false;
-            this._pathXmlFile = "";
-            this.listView1.Enabled = false;
-            this.saveToolStripMenuItem.Enabled = false;
-            this.saveHowToolStripMenuItem.Enabled = false;
-            this.addToolStripMenuItem.Enabled = false;
-            this.delToolStripMenuItem.Enabled = false;
-            this.editingToolStripMenuItem.Enabled = false;
-            ViewCollection(); 
+            _pathXmlFile = "";
+            StatusOfChange = false;
+            ListElements = new List<Trial>();
+            UniqId = new List<int>();
+            listView1.Enabled = false;
+            saveToolStripMenuItem.Enabled = false;
+            saveHowToolStripMenuItem.Enabled = false;
+            addToolStripMenuItem.Enabled = false;
+            delToolStripMenuItem.Enabled = false;
+            editingToolStripMenuItem.Enabled = false;
+            ViewCollection();
         }
-     
 
-        public string SpaceDeleting(string line) {
-            line = line.Trim();
-            while (line.Contains("  ") == true) {
-                line = line.Remove(line.IndexOf("  "), 1);
-            }
-            return line;
+
+        //==============================Methods==============================//
+        private void Create() {
+            listView1.Enabled = true;
+            saveToolStripMenuItem.Enabled = true;
+            saveHowToolStripMenuItem.Enabled = true;
+            addToolStripMenuItem.Enabled = true;
+            delToolStripMenuItem.Enabled = true;
+            editingToolStripMenuItem.Enabled = true;
         }
 
         public void Adding() {
-            AddForm form = new AddForm(this);
-            form.ShowDialog();
+            AddForm addForm = new AddForm(this);
+            addForm.ShowDialog();
         }
 
         public void Editing() {
             try {
                 int index = listView1.FocusedItem.Index;
-                EditForm form = new EditForm(this, index);
-                form.ShowDialog();
+                EditForm editForm = new EditForm(this, index);
+                editForm.ShowDialog();
             }
             catch {
                 string message = "Отсутствует или не выбрана строка для редактирования!";
@@ -62,14 +65,14 @@ namespace Folkmancer.OOP.GUI {
         public void Deleting() {
             try {
                 int index = listView1.FocusedItem.Index;
-                string message = "Вы уверены, что хотите удалить эту запись?\n" + Exams[index].ToString();
+                string message = "Вы уверены, что хотите удалить эту запись?\n" + ListElements[index].ToString();
                 string caption = "Внимание";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 MessageBoxIcon icon = MessageBoxIcon.Question;
                 DialogResult result = MessageBox.Show(message, caption, buttons, icon);
                 if (result == DialogResult.Yes) {
                     listView1.Items[index].Remove();
-                    Exams.RemoveAt(index);
+                    ListElements.RemoveAt(index);
                 }
             }
             catch {
@@ -98,61 +101,144 @@ namespace Folkmancer.OOP.GUI {
             MessageBox.Show(message, caption, buttons, icon);
         }
 
-        private void Create() {
-            this.listView1.Enabled = true;
-            this.saveToolStripMenuItem.Enabled = true;
-            this.saveHowToolStripMenuItem.Enabled = true;
-            this.addToolStripMenuItem.Enabled = true;
-            this.delToolStripMenuItem.Enabled = true;
-            this.editingToolStripMenuItem.Enabled = true;
-        }
-
         public void ViewCollection() {
             listView1.Clear();
             listView1.Columns.Add("Идентификатор");
-            listView1.Columns[0].Width = 100;
             listView1.Columns.Add("Предмет");
-            listView1.Columns[1].Width = 115;
             listView1.Columns.Add("Дата");
-            listView1.Columns[2].Width = 80;
             listView1.Columns.Add("Преподаватель");
-            listView1.Columns[3].Width = 115;
             listView1.Columns.Add("Оценка");
-            listView1.Columns[4].Width = 50;
             listView1.Columns.Add("Тип");
+            listView1.Columns[0].Width = 100;
+            listView1.Columns[1].Width = 115;
+            listView1.Columns[2].Width = 80;
+            listView1.Columns[3].Width = 115;
+            listView1.Columns[4].Width = 50;
             listView1.Columns[5].Width = 120;
-            for (int i = 0; i < this.Exams.Count; i++) {
-                if (this.Exams[i].GetType() == typeof(Exam)) {
-                    Exam Temp = (Exam)this.Exams[i];
-                    listView1.Items.Add(Convert.ToString(Temp.ID));
-                    listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
-                    listView1.Items[i].SubItems.Add(Temp.Date);
-                    listView1.Items[i].SubItems.Add(Temp.NameOfTeacher);
-                    listView1.Items[i].SubItems.Add(Convert.ToString(Temp.Grade));
+            for (int i = 0; i < ListElements.Count; i++) {
+                if (ListElements[i].GetType() == typeof(Exam)) {
+                    Exam temp = (Exam)ListElements[i];
+                    listView1.Items.Add(Convert.ToString(temp.ID));
+                    listView1.Items[i].SubItems.Add(temp.NameOfDiscipline);
+                    listView1.Items[i].SubItems.Add(temp.Date);
+                    listView1.Items[i].SubItems.Add(temp.NameOfTeacher);
+                    listView1.Items[i].SubItems.Add(Convert.ToString(temp.Grade));
                     listView1.Items[i].SubItems.Add("Экзамен");
                 }
-                else if (this.Exams[i].GetType() == typeof(FinalExam)) {
-                    FinalExam Temp = (FinalExam)this.Exams[i];
-                    listView1.Items.Add(Convert.ToString(Temp.ID));
-                    listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
-                    listView1.Items[i].SubItems.Add(Temp.Date);
-                    listView1.Items[i].SubItems.Add(Temp.NameOfTeacher);
-                    listView1.Items[i].SubItems.Add(Convert.ToString(Temp.Grade));
+                else if (ListElements[i].GetType() == typeof(FinalExam)) {
+                    FinalExam temp = (FinalExam)ListElements[i];
+                    listView1.Items.Add(Convert.ToString(temp.ID));
+                    listView1.Items[i].SubItems.Add(temp.NameOfDiscipline);
+                    listView1.Items[i].SubItems.Add(temp.Date);
+                    listView1.Items[i].SubItems.Add(temp.NameOfTeacher);
+                    listView1.Items[i].SubItems.Add(Convert.ToString(temp.Grade));
                     listView1.Items[i].SubItems.Add("Выпускной экзамен");
                 }
-                else if (this.Exams[i].GetType() == typeof(Test)) {
-                    Test Temp = (Test)this.Exams[i];
-                    listView1.Items.Add(Convert.ToString(Temp.ID));
-                    listView1.Items[i].SubItems.Add(Temp.NameOfDiscipline);
-                    listView1.Items[i].SubItems.Add(Temp.Date);
-                    listView1.Items[i].SubItems.Add(Temp.NameOfTeacher);
-                    listView1.Items[i].SubItems.Add(Convert.ToString(Temp.GetGrade()));
+                else if (ListElements[i].GetType() == typeof(Test)) {
+                    Test temp = (Test)ListElements[i];
+                    listView1.Items.Add(Convert.ToString(temp.ID));
+                    listView1.Items[i].SubItems.Add(temp.NameOfDiscipline);
+                    listView1.Items[i].SubItems.Add(temp.Date);
+                    listView1.Items[i].SubItems.Add(temp.NameOfTeacher);
+                    listView1.Items[i].SubItems.Add(Convert.ToString(temp.GetGrade()));
                     listView1.Items[i].SubItems.Add("Тест");
                 }
             }
         }
 
+        public string SpaceDeleting(string line) {
+            line = line.Trim();
+            while (line.Contains("  ") == true) {
+                line = line.Remove(line.IndexOf("  "), 1);
+            }
+            return line;
+        }
 
+
+        //==============================Work with table==============================//
+        private void SortTable(ColumnClickEventArgs e) {
+            switch (e.Column) {
+                case 0:
+                    if (_switches[0] == false) {
+                        ListElements.Sort((a, b) => b.ID.CompareTo(a.ID));
+                        _switches[0] = true;
+                    }
+                    else {
+                        ListElements.Sort((a, b) => a.ID.CompareTo(b.ID));
+                        _switches[0] = false;
+                    }
+                    break;
+                case 1:
+                    if (_switches[1] == false) {
+                        ListElements.Sort((a, b) => b.NameOfDiscipline.CompareTo(a.NameOfDiscipline));
+                        _switches[1] = true;
+                    }
+                    else {
+                        ListElements.Sort((a, b) => a.NameOfDiscipline.CompareTo(b.NameOfDiscipline));
+                        _switches[1] = false;
+                    }
+                    break;
+                case 2:
+                    if (_switches[2] == false) {
+                        ListElements.Sort((a, b) => b.Date.CompareTo(a.Date));
+                        _switches[2] = true;
+                    }
+                    else {
+                        ListElements.Sort((a, b) => a.Date.CompareTo(b.Date));
+                        _switches[2] = false;
+                    }
+                    break;
+                case 3:
+                    if (_switches[3] == false) {
+                        ListElements.Sort((a, b) => b.NameOfTeacher.CompareTo(a.NameOfTeacher));
+                        _switches[3] = true;
+                    }
+                    else {
+                        ListElements.Sort((a, b) => a.NameOfTeacher.CompareTo(b.NameOfTeacher));
+                        _switches[3] = false;
+                    }
+                    break;
+                case 4:
+                    if (_switches[4] == false) {
+                        ListElements.Sort((a, b) => b.GetGrade().CompareTo(a.GetGrade()));
+                        _switches[4] = true;
+                    }
+                    else {
+                        ListElements.Sort((a, b) => a.GetGrade().CompareTo(b.GetGrade()));
+                        _switches[4] = false;
+                    }
+                    break;
+                case 5:
+                    if (_switches[5] == false) {
+                        ListElements.Sort((a, b) => b.TypeOfTrial().CompareTo(a.TypeOfTrial()));
+                        _switches[5] = true;
+                    }
+                    else {
+                        ListElements.Sort((a, b) => a.TypeOfTrial().CompareTo(b.TypeOfTrial()));
+                        _switches[5] = false;
+                    }
+                    break;
+                default:
+                    string message = "Что-то пошло не так!";
+                    string caption = "Ошибка";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    MessageBoxIcon icon = MessageBoxIcon.Error;
+                    MessageBox.Show(message, caption, buttons, icon);
+                    break;
+            }
+        }
+
+        private void SizeChangeTable() {
+            listView1.Columns[0].Width = (int)((listView1.Size.Width) * 0.16);
+            listView1.Columns[1].Width = (int)((listView1.Size.Width) * 0.2);
+            listView1.Columns[2].Width = (int)((listView1.Size.Width) * 0.14);
+            listView1.Columns[3].Width = (int)((listView1.Size.Width) * 0.2);
+            listView1.Columns[4].Width = (int)((listView1.Size.Width) * 0.09);
+            listView1.Columns[5].Width = (int)((listView1.Size.Width) * 0.21);
+        }
+
+
+        //==============================Work with file==============================//
         public void OpenFile() {
             OpenFileDialog XmlDataFile = new OpenFileDialog();
             XmlDataFile.InitialDirectory = Application.StartupPath;
@@ -165,11 +251,11 @@ namespace Folkmancer.OOP.GUI {
                         using (FileStream fStream = File.OpenRead(XmlDataFile.FileName)) {
                             XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
                             List<Trial> listObj = (List<Trial>)formatter.Deserialize(fStream);
-                            this.Exams.Clear();
-                            this.UniqId.Clear();
+                            ListElements.Clear();
+                            UniqId.Clear();
                             foreach (Trial i in listObj) {
-                                this.Exams.Insert(this.Exams.Count, i);
-                                this.UniqId.Insert(this.UniqId.Count, i.ID);
+                                ListElements.Insert(ListElements.Count, i);
+                                UniqId.Insert(UniqId.Count, i.ID);
                             }
                             fStream.Close();
                         }
@@ -182,19 +268,18 @@ namespace Folkmancer.OOP.GUI {
             }
         }
 
-        public void SaveFile(string path) {
-            if (path != "") {
+        public void SaveFile() {
+            if (_pathXmlFile != "") {
                 try {
                     XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
-                    using (FileStream fStream = new FileStream(path, FileMode.Create)) {
-                        formatter.Serialize(fStream, Exams);
+                    using (FileStream fStream = new FileStream(_pathXmlFile, FileMode.Create)) {
+                        formatter.Serialize(fStream, ListElements);
                         fStream.Close();
                     }   
                 }
                 catch (Exception ex) {
                     MessageBox.Show("Ошибка: невозможно прочитать файл с диска. Original error: " + ex.Message);
                 }
-                this.StatusOfChange = false;
             }
         }
         
@@ -208,7 +293,7 @@ namespace Folkmancer.OOP.GUI {
                 try {
                     XmlSerializer formatter = new XmlSerializer(typeof(List<Trial>));
                     using (FileStream fStream = File.OpenWrite(XmlDataFile.FileName)) {
-                        formatter.Serialize(fStream, Exams);
+                        formatter.Serialize(fStream, ListElements);
                         fStream.Close();
                     }
                 }
@@ -216,10 +301,14 @@ namespace Folkmancer.OOP.GUI {
                     MessageBox.Show("Ошибка: невозможно прочитать файл с диска. Original error: " + ex.Message);
                 }
             }
-            this._pathXmlFile = XmlDataFile.FileName;
-            this.StatusOfChange = false;
+            _pathXmlFile = XmlDataFile.FileName;
         }
 
+
+        //==============================Form object==============================//
+        private void createToolStripMenuItem_Click(object sender, EventArgs e) {
+            Create();
+        }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e) {
             OpenFile();
@@ -228,12 +317,19 @@ namespace Folkmancer.OOP.GUI {
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (this._pathXmlFile != "") { SaveFile(this._pathXmlFile); }
-            else { SaveHowFile(); }
+            if (_pathXmlFile != "") {
+                SaveFile();
+                StatusOfChange = false;
+            }
+            else {
+                SaveHowFile();
+                StatusOfChange = false;
+            }
         }
 
         private void saveHowToolStripMenuItem_Click(object sender, EventArgs e) {
             SaveHowFile();
+            StatusOfChange = false;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -248,7 +344,7 @@ namespace Folkmancer.OOP.GUI {
         private void delToolStripMenuItem_Click(object sender, EventArgs e) {
             Deleting();
             ViewCollection();
-            this.StatusOfChange = true;
+            StatusOfChange = true;
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -260,36 +356,34 @@ namespace Folkmancer.OOP.GUI {
             Help();
         }
 
-        private void createToolStripMenuItem_Click(object sender, EventArgs e) {
-            Create();
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+            AboutBox1 AboutForm = new AboutBox1();
+            AboutForm.ShowDialog();
+        }
+
+
+        //==============================Events==============================//
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
+            SortTable(e);
+            ViewCollection();
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e) {
+            SizeChangeTable();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-            if (this.StatusOfChange == true) {
+            if (StatusOfChange == true) {
                 string message = "Хотите ли вы сохранить изменения?";
                 string caption = "Внимание";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                 MessageBoxIcon icon = MessageBoxIcon.Question;
                 DialogResult result = MessageBox.Show(message, caption, buttons, icon);
                 if (result == DialogResult.Yes) {
-                    if (this._pathXmlFile != "") { SaveFile(this._pathXmlFile); }
+                    if (_pathXmlFile != "") { SaveFile(); }
                     else { SaveHowFile(); }
                 }
             }
-        }
-
-        private void Form1_SizeChanged(object sender, EventArgs e) {
-            this.listView1.Columns[0].Width = (int)((this.listView1.Size.Width) * 0.16);
-            this.listView1.Columns[1].Width = (int)((this.listView1.Size.Width) * 0.2);
-            this.listView1.Columns[2].Width = (int)((this.listView1.Size.Width) * 0.14);
-            this.listView1.Columns[3].Width = (int)((this.listView1.Size.Width) * 0.2);
-            this.listView1.Columns[4].Width = (int)((this.listView1.Size.Width) * 0.09);
-            this.listView1.Columns[5].Width = (int)((this.listView1.Size.Width) * 0.21);
-        }
-
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
-            AboutBox1 AboutForm = new AboutBox1();
-            AboutForm.ShowDialog();
-        }
+        }  
     }
 }

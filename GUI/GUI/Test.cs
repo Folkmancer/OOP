@@ -57,7 +57,11 @@ namespace Folkmancer.OOP.ControlOfEducationalProcess {
 
         //Методы
 
-        public int GetGrade() {
+        public override string TypeOfTrial() {
+            return "Тест";
+        }
+
+        public override int GetGrade() {
             if (Points >= PointsForFive) { return 5; }
             else if (Points < PointsForFive && Points >= PointsForFour) { return 4; }
             else if (Points < PointsForFour && Points >= PointsForThree) { return 3; }

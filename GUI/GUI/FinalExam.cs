@@ -14,6 +14,10 @@
 
         //Методы
 
+        public override string TypeOfTrial() {
+            return "Выпускной экзамен";
+        }
+
         public override int GetHashCode() {
             return this.ID.GetHashCode();
         }
